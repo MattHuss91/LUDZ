@@ -273,16 +273,20 @@ with tab3:
 
     if participants:
         if st.button("Use the Randomiser"):
-            roll = random.randint(1,6)
+            roll = random.randint(1, 6)
             challenge = dice_challenges[roll]
-            participant = random.choice(participants)
-            participant_name = participant["name"]
-            st.success(f"🎲 Dice rolled: {roll}")
-            st.info(f"**{participant_name}** has been chosen to do: {challenge}")
-            add_challenge(participant["id"], challenge)
+
+            # Always pick Scho
+            scho = next((p for p in participants if p["name"] == "Scho"), None)
+
+            if scho:
+                st.success(f"🎲 Dice rolled: {roll}")
+                st.info(f"**{scho['name']}** has been chosen to do: {challenge}")
+                add_challenge(scho["id"], challenge)
+            else:
+                st.warning("⚠️ Scho is not in the participants list!")
     else:
         st.write("Add participants first to use the randomiser.")
-
 # -------------------- FORFEITS TAB --------------------
 with tab4:
     st.header("⚔️ Forfeit Randomiser")
